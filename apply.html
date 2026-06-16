@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>応募受付フォーム</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --indigo:#33457a; --indigo-d:#27365f; --ink:#1f2733; --sub:#5b6573;
+    --line:#e3e6ec; --bg:#f6f7f9; --ok:#2f8f5b; --err:#c0392b; --card:#ffffff;
+  }
+  @media (prefers-reduced-motion: no-preference){
+    .check{animation:pop .35s ease both;}
+  }
+  @keyframes pop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Noto Sans JP",system-ui,-apple-system,sans-serif;line-height:1.7;}
+  .wrap{max-width:560px;margin:0 auto;padding:24px 18px 64px;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:24px 20px;position:relative;}
+  .brand{font-size:12px;letter-spacing:.08em;color:var(--sub);margin:0 0 4px;}
+  h1{font-size:20px;margin:0 0 6px;font-weight:700;}
+  .lead{font-size:13px;color:var(--sub);margin:0 0 18px;}
+  .trust{display:flex;gap:8px;align-items:flex-start;background:#f0f3fa;
+    border:1px solid #dde3f2;border-radius:10px;padding:11px 13px;
+    font-size:12.5px;color:#33457a;margin:0 0 22px;line-height:1.6;}
+  .trust b{font-weight:700;}
+  label{display:block;font-size:13.5px;font-weight:500;margin:16px 0 6px;}
+  .req{color:var(--err);font-size:12px;margin-left:4px;}
+  .opt{color:var(--sub);font-size:11.5px;font-weight:400;margin-left:6px;}
+  input,textarea{width:100%;font:inherit;font-size:16px;color:var(--ink);
+    background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 13px;}
+  input:focus,textarea:focus{outline:none;border-color:var(--indigo);
+    box-shadow:0 0 0 3px rgba(51,69,122,.12);}
+  textarea{min-height:96px;resize:vertical;}
+  .hint{font-size:11.5px;color:var(--sub);margin:6px 0 0;}
+  .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;}
+  button{width:100%;margin-top:24px;background:var(--indigo);color:#fff;
+    font:inherit;font-weight:700;font-size:15px;border:0;border-radius:10px;
+    padding:14px;cursor:pointer;}
+  button:hover{background:var(--indigo-d);}
+  button:disabled{opacity:.55;cursor:default;}
+  .msg{font-size:13px;margin-top:14px;display:none;}
+  .msg.err{display:block;color:var(--err);}
+  .foot{text-align:center;font-size:11px;color:var(--sub);margin-top:20px;}
+  .state{display:none;text-align:center;padding:24px 4px;}
+  .state.show{display:block;}
+  .check{width:54px;height:54px;border-radius:50%;background:#e8f4ec;color:var(--ok);
+    display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 14px;}
+  .state h2{font-size:18px;margin:0 0 8px;}
+  .state p{font-size:13.5px;color:var(--sub);margin:0;}
+  .gate{display:none;text-align:center;color:var(--sub);font-size:14px;padding:28px 8px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+
+    <div id="gate" class="gate"></div>
+
+    <div id="formView">
+      <p class="brand">H.P.canvas 求人</p>
+      <h1 id="title">応募受付フォーム</h1>
+      <p class="lead">下記をご記入のうえ送信してください。24時間受け付けています。</p>
+
+      <div class="trust">
+        <span>🔒</span>
+        <span><b>登録は不要です。</b>入力内容は園へ直接届きます。
+        H.P.canvasが内容を<b>保存することはありません</b>。勧誘の電話もかかってきません。</span>
+      </div>
+
+      <label>お名前<span class="req">必須</span></label>
+      <input id="name" type="text" maxlength="40" autocomplete="name" placeholder="例）山田 花子">
+
+      <label>電話番号<span class="opt">電話・メールのいずれか必須</span></label>
+      <input id="phone" type="tel" maxlength="20" autocomplete="tel" inputmode="tel" placeholder="例）090-1234-5678">
+
+      <label>メールアドレス<span class="opt">電話・メールのいずれか必須</span></label>
+      <input id="email" type="email" maxlength="80" autocomplete="email" inputmode="email" placeholder="例）hana@example.com">
+
+      <label>希望・メッセージ<span class="opt">任意</span></label>
+      <textarea id="message" maxlength="500" placeholder="例）パート希望／週3日から／7月以降勤務可 など"></textarea>
+      <p class="hint">見学希望やご質問もこちらにどうぞ。</p>
+
+      <!-- 人間には見えない罠フィールド。botが埋めると送信を弾く -->
+      <div class="hp" aria-hidden="true">
+        <label>Website</label>
+        <input id="website" type="text" tabindex="-1" autocomplete="off">
+      </div>
+
+      <button id="submit">この内容で送信する</button>
+      <div id="err" class="msg err"></div>
+      <p class="foot">提供：H.P.canvas株式会社</p>
+    </div>
+
+    <div id="doneView" class="state">
+      <div class="check">✓</div>
+      <h2>送信しました</h2>
+      <p>内容は園へ直接届きました。<br>園からのご連絡をお待ちください。</p>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // ====== デプロイしたGASウェブアプリのURLを貼る ======
+  const GAS_URL = 'ここにGASのウェブアプリURLを貼る';
+  // ===============================================
+
+  const $ = id => document.getElementById(id);
+  const school = new URLSearchParams(location.search).get('school') || '';
+  const loadedAt = Date.now();
+  const gate = $('gate'), formView = $('formView'), doneView = $('doneView');
+
+  function showGate(text){ formView.style.display='none'; gate.style.display='block'; gate.textContent=text; }
+
+  async function post(payload){
+    const r = await fetch(GAS_URL, {
+      method:'POST',
+      headers:{'Content-Type':'text/plain;charset=utf-8'}, // text/plainでCORSプリフライト回避
+      body: JSON.stringify(payload)
+    });
+    return r.json();
+  }
+
+  // 読み込み時：園名の表示＋フォーム有効チェック
+  (async function init(){
+    if(!school){ showGate('URLが正しくありません。園からご案内のリンクをご確認ください。'); return; }
+    formView.style.display='none'; gate.style.display='block'; gate.textContent='読み込み中…';
+    try{
+      const d = await post({ action:'info', school });
+      if(!d.ok || !d.formEnabled){ showGate('このフォームは現在ご利用いただけません。'); return; }
+      $('title').textContent = (d.name ? d.name + ' ' : '') + '応募受付フォーム';
+      gate.style.display='none'; formView.style.display='block';
+    }catch(e){
+      showGate('読み込みに失敗しました。時間をおいて再度お試しください。');
+    }
+  })();
+
+  $('submit').addEventListener('click', async function(){
+    const err = $('err'); err.style.display='none';
+    const name = $('name').value.trim();
+    const phone = $('phone').value.trim();
+    const email = $('email').value.trim();
+    if(!name){ err.textContent='お名前をご記入ください。'; err.style.display='block'; return; }
+    if(!phone && !email){ err.textContent='電話番号かメールアドレスのいずれかをご記入ください。'; err.style.display='block'; return; }
+
+    this.disabled = true; this.textContent='送信中…';
+    try{
+      const d = await post({
+        action:'apply', school, name, phone, email,
+        message: $('message').value.trim(),
+        website: $('website').value,   // honeypot
+        t: Date.now() - loadedAt       // 滞在時間(ms)
+      });
+      if(d.ok){
+        formView.style.display='none'; doneView.classList.add('show');
+      }else{
+        err.textContent = ({
+          name_required:'お名前をご記入ください。',
+          contact_required:'連絡先をご記入ください。',
+          form_disabled:'このフォームは現在ご利用いただけません。',
+          school_not_found:'園情報が見つかりません。リンクをご確認ください。'
+        }[d.reason]) || '送信に失敗しました。時間をおいて再度お試しください。';
+        err.style.display='block';
+        this.disabled=false; this.textContent='この内容で送信する';
+      }
+    }catch(e){
+      err.textContent='送信に失敗しました。通信環境をご確認ください。';
+      err.style.display='block';
+      this.disabled=false; this.textContent='この内容で送信する';
+    }
+  });
+</script>
+</body>
+</html>
