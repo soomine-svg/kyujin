@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>応募受付フォーム</title>
+<title>ほいくむすび｜応募受付</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
@@ -63,7 +63,7 @@
     <div id="gate" class="gate"></div>
 
     <div id="formView">
-      <p class="brand">H.P.canvas 求人</p>
+      <p class="brand">ほいくむすび ── 九州の保育のしごとさがし</p>
       <h1 id="title">応募受付フォーム</h1>
       <p class="lead">下記をご記入のうえ送信してください。24時間受け付けています。</p>
 
@@ -71,7 +71,7 @@
         <span>🔒</span>
         <span><b>登録は不要です。</b>入力内容は園へ直接届きます。<br>
         ご記入後は、園から折り返しご連絡します。夜間や休園日にいただいた場合は、お返事まで少しお時間をいただくことがあります。
-        <span style="display:block;margin-top:8px;font-size:11.5px;color:#5b6573;">※ きゅうしゅう保育ナビは入力内容を保存しない仕様にしています。応募に関するやり取りは園とダイレクトに行ってください。勧誘の電話やメールは一切ございません。</span></span>
+        <span style="display:block;margin-top:8px;font-size:11.5px;color:#5b6573;">※ ほいくむすびは入力内容を保存しない仕様にしています。応募に関するやり取りは園とダイレクトに行ってください。勧誘の電話やメールは一切ございません。</span></span>
       </div>
 
       <label>お名前<span class="req">必須</span></label>
@@ -95,7 +95,7 @@
 
       <button id="submit">この内容で送信する</button>
       <div id="err" class="msg err"></div>
-      <p class="foot">提供：H.P.canvas株式会社</p>
+      <p class="foot">ほいくむすび（運営：H.P.canvas株式会社）</p>
     </div>
 
     <div id="doneView" class="state">
@@ -108,9 +108,9 @@
 </div>
 
 <script>
-  // ====== デプロイしたGASウェブアプリのURLを貼る ======
+  // ====== デプロイしたGASウェブアプリのURL ======
   const GAS_URL = 'https://script.google.com/macros/s/AKfycbwNn36v5RLvbCI0ypDY2V575kCNyxbd7_SENk4XmBypzhQ9pvb6CGYLtceMbYb4QlPD/exec';
-  // ===============================================
+  // ===========================================
 
   const $ = id => document.getElementById(id);
   const school = new URLSearchParams(location.search).get('school') || '';
